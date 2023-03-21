@@ -45,6 +45,7 @@ func (arrayList *ArrayList) AddToBack(value int) {
 	arrayList.size++
 }
 
+// Add an element at the given index
 func (arrayList *ArrayList) AddOnIndex(index int, value int) {
 	// Make sure the ArrayList has enough space
 	if cap(arrayList.values) == arrayList.size {
