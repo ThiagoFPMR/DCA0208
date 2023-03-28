@@ -59,7 +59,7 @@ func (linkedList *LinkedList) AddOnIndex(index int, value int) {
 }
 
 // Remove the element at the given index
-func (linkedList *LinkedList) RemoveOnIndex(index int) {
+func (linkedList *LinkedList) RemoveFromIndex(index int) {
 	var current *Node = linkedList.head
 
 	for i := 0; i < index-1; i++ {

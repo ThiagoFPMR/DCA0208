@@ -6,11 +6,8 @@ type ArrayList struct {
 }
 
 // Initialize the ArrayList with a default size of 10
-func (arrayList *ArrayList) Init(args ...int) {
+func (arrayList *ArrayList) Init() {
 	size := 10
-	if len(args) > 0 {
-		size = args[0]
-	}
 	arrayList.values = make([]int, size)
 	arrayList.size = 0
 }

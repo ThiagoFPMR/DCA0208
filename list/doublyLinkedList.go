@@ -68,7 +68,7 @@ func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
 }
 
 // Remove an element at the given index
-func (doublyLinkedList *DoublyLinkedList) RemoveOnIndex(index int) {
+func (doublyLinkedList *DoublyLinkedList) RemoveFromIndex(index int) {
 	var current *DoubleNode = doublyLinkedList.head
 
 	for i := 0; i < index-1; i++ {
