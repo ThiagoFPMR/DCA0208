@@ -50,9 +50,16 @@ func (linkedList *LinkedList) RemoveFromBack() {
 func (linkedList *LinkedList) AddOnIndex(index int, value int) {
 	var current *Node = linkedList.head
 
+	if index == 0 {
+		linkedList.head = &Node{value: value, next: current}
+		linkedList.size++
+		return
+	}
+
 	for i := 0; i < index-1; i++ {
 		current = current.next
 	}
+
 	current.next = &Node{value: value, next: current.next}
 
 	linkedList.size++
@@ -62,10 +69,21 @@ func (linkedList *LinkedList) AddOnIndex(index int, value int) {
 func (linkedList *LinkedList) RemoveFromIndex(index int) {
 	var current *Node = linkedList.head
 
+	if index == 0 {
+		linkedList.head = current.next
+		linkedList.size--
+		return
+	}
+
 	for i := 0; i < index-1; i++ {
 		current = current.next
 	}
-	current.next = current.next.next
+
+	if index < linkedList.size-1 {
+		current.next = current.next.next
+	} else {
+		current.next = nil
+	}
 
 	linkedList.size--
 }

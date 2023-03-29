@@ -26,7 +26,7 @@ func (arrayList *ArrayList) Length() int {
 
 // Remove the last element of the ArrayList
 func (arrayList *ArrayList) RemoveFromBack() {
-	arrayList.values = arrayList.values[:arrayList.size]
+	arrayList.values[arrayList.size-1] = 0
 	arrayList.size--
 }
 

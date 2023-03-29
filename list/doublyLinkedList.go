@@ -51,6 +51,13 @@ func (doublyLinkedList *DoublyLinkedList) RemoveFromBack() {
 func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
 	var current *DoubleNode = doublyLinkedList.head
 
+	if index == 0 {
+		doublyLinkedList.head = &DoubleNode{value: value, next: current, prev: nil}
+		current.prev = doublyLinkedList.head
+		doublyLinkedList.size++
+		return
+	}
+
 	for i := 0; i < index-1; i++ {
 		current = current.next
 	}
@@ -71,12 +78,23 @@ func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
 func (doublyLinkedList *DoublyLinkedList) RemoveFromIndex(index int) {
 	var current *DoubleNode = doublyLinkedList.head
 
+	if index == 0 {
+		doublyLinkedList.head = current.next
+		doublyLinkedList.head.prev = nil
+		doublyLinkedList.size--
+		return
+	}
+
 	for i := 0; i < index-1; i++ {
 		current = current.next
 	}
 
-	current.next = current.next.next
-	current.next.prev = current
+	if index < doublyLinkedList.size-1 {
+		current.next = current.next.next
+		current.next.prev = current
+	} else {
+		current.next = nil
+	}
 
 	doublyLinkedList.size--
 }
