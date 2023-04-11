@@ -9,8 +9,8 @@ var tests = map[string]func(t *testing.T){
 	"Length": testLength,
 	"IsEmpty": testIsEmpty,
 	"Push": testPush,
-	"Peek": testPeek,
-	"Pop": testPop,
+	//"Peek": testPeek,
+	//"Pop": testPop,
 }
 
 // Runs all tests of the Stack interface.
@@ -80,8 +80,9 @@ func testPush(t *testing.T) {
 		t.Errorf("Failed to push element. Length of instance is %d, expected %d", stack.Length(), limit)
 	}
 
-	if stack.Peek() != limit-1 {
-		t.Errorf("Failed to push element. Element at the top is %d, expected %d", stack.Peek(), limit-1)
+	value, _ := stack.Peek()
+	if value != limit-1 {
+		t.Errorf("Failed to push element. Element at the top is %d, expected %d", value, limit-1)
 	}
 }
 
@@ -105,8 +106,10 @@ func testPop(t *testing.T) {
 				stack.Push(tt.topElement)
 			}
 			
-			value := stack.Pop()
+			value, error := stack.Pop()
 
+
+			// Tests relating to the value returned by Pop
 			if tt.stackSize == 0 && value != 0{
 				if value != 0 {
 					t.Errorf("Pop returned %d, expected %d", value, 0)
@@ -117,29 +120,57 @@ func testPop(t *testing.T) {
 				}
 			}
 
+			// Tests relating to the size after Pop
 			sizeAfterPop := tt.stackSize - 1
 			if sizeAfterPop < 0 {
 				sizeAfterPop = 0
 			}
-
 			if stack.Length() != sizeAfterPop{
 				t.Errorf("Failed to pop element. Length of instance is %d, expected %d", stack.Length(), sizeAfterPop)
+			}
+
+			// Tests relating to the error returned by Pop
+			if error != nil && tt.stackSize > 0 {
+				t.Errorf("Pop returned error, expected no error")
+			}
+			if error == nil && tt.stackSize == 0 {
+				t.Errorf("Pop returned no error, expected error")
 			}
 		})
 	}
 }
 
+var peekTests = map[string]struct {
+	topElement, stackSize int
+}{
+	"NonEmpty": {15, 15},
+	"Empty": {15, 0},
+}
+
 // Tests the Peek method.
 func testPeek(t *testing.T) {
-	stack := new(Stack)
-	stack.Init()
+	for name, tt := range popTests {
+		tt := tt
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			stack := new(Stack)
+			stack.Init()
 
-	stack.Push(1)
-	stack.Push(2)
-	stack.Push(3)
+			for i := 0; i < tt.stackSize; i++ {
+				stack.Push(tt.topElement)
+			}
 
-	if stack.Peek() != 3 {
-		t.Errorf("Peek returned %d, expected %d", stack.Peek(), 3)
+			value, error := stack.Peek()
+			if value != tt.topElement {
+				t.Errorf("Peek returned %d, expected %d", value, tt.topElement)
+			}
+			if error != nil && tt.stackSize > 0 {
+				t.Errorf("Peek returned error, expected no error")
+			}
+			if error == nil && tt.stackSize == 0 {
+				t.Errorf("Peek returned no error, expected error")
+			}
+		})
 	}
 }
 

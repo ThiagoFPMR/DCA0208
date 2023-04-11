@@ -1,5 +1,9 @@
 package stack
 
+import (
+	"errors"
+)
+
 type StackNode struct {
 	value int
 	prev  *StackNode
@@ -33,19 +37,23 @@ func (stack *Stack) Push(value int) {
 }
 
 // Peek the top element of the Stack
-func (stack *Stack) Peek() int {
-	return stack.top.value
+func (stack *Stack) Peek() (int, error) {
+	if stack.IsEmpty() {
+		return 0, errors.New("Stack is empty")
+	} else {
+		return stack.top.value, nil
+	}
 }
 
 // Remove the top element of the Stack
-func (stack *Stack) Pop() int {
+func (stack *Stack) Pop() (int, error) {
 	if !stack.IsEmpty() {
 		value := stack.top.value
 		stack.top = stack.top.prev
 		stack.size--
-		return value
+		return value, nil
 	}
-	return 0
+	return 0, errors.New("Stack is empty")
 }
 
 
