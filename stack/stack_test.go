@@ -18,6 +18,7 @@ func TestStack(t *testing.T) {
 	for testName, test := range tests {
 		test := test
 		t.Run(testName, func(t *testing.T) {
+			t.Parallel()
 			test(t)
 		})
 	}
@@ -110,14 +111,11 @@ func testPop(t *testing.T) {
 
 
 			// Tests relating to the value returned by Pop
-			if tt.stackSize == 0 && value != 0{
-				if value != 0 {
-					t.Errorf("Pop returned %d, expected %d", value, 0)
-				}
-			} else {
-				if value != tt.topElement {
-					t.Errorf("Pop returned %d, expected %d", value, tt.topElement)
-				}
+			if value != tt.topElement && tt.stackSize > 0 {
+				t.Errorf("Pop returned %d, expected %d", value, tt.topElement)
+			}
+			if tt.stackSize == 0 && value != 0 {
+				t.Errorf("Pop returned %d, expected %d", value, 0)
 			}
 
 			// Tests relating to the size after Pop
