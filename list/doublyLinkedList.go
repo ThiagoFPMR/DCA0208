@@ -8,12 +8,14 @@ type DoubleNode struct {
 
 type DoublyLinkedList struct {
 	head *DoubleNode
+	tail *DoubleNode
 	size int
 }
 
 // Initialize the DoublyLinkedList.
 func (doublyLinkedList *DoublyLinkedList) Init() {
 	doublyLinkedList.head = &DoubleNode{value: 0, next: nil, prev: nil}
+	doublyLinkedList.tail = doublyLinkedList.head
 	doublyLinkedList.size = 0
 }
 
@@ -24,25 +26,27 @@ func (doublyLinkedList *DoublyLinkedList) Length() int {
 
 // Add an element to the end of the DoublyLinkedList
 func (doublyLinkedList *DoublyLinkedList) AddToBack(value int) {
-	var tail *DoubleNode = doublyLinkedList.head
 
-	for i := 0; i < doublyLinkedList.size-1; i++ {
-		tail = tail.next
+	if doublyLinkedList.size == 0 {
+		doublyLinkedList.head = &DoubleNode{value: value, next: nil, prev: nil}
+		doublyLinkedList.tail = doublyLinkedList.head
+	} else {
+		doublyLinkedList.tail.next = &DoubleNode{value: value, next: nil, prev: doublyLinkedList.tail}
+		doublyLinkedList.tail = doublyLinkedList.tail.next
 	}
-
-	tail.next = &DoubleNode{value: value, next: nil, prev: tail}
 
 	doublyLinkedList.size++
 }
 
 // Remove the last element of the DoublyLinkedList
 func (doublyLinkedList *DoublyLinkedList) RemoveFromBack() {
-	var tail *DoubleNode = doublyLinkedList.head
-
-	for i := 0; i < doublyLinkedList.size-1; i++ {
-		tail = tail.next
-	}
-	tail.next = nil
+	if doublyLinkedList.size == 1 {
+		doublyLinkedList.head = &DoubleNode{value: 0, next: nil, prev: nil}
+		doublyLinkedList.tail = doublyLinkedList.head
+	} else {
+		doublyLinkedList.tail.prev.next = nil
+		doublyLinkedList.tail = doublyLinkedList.tail.prev
+	}	
 
 	doublyLinkedList.size--
 }
@@ -70,6 +74,9 @@ func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
 	if next != nil {
 		next.prev = newDoubleNode
 	}
+	if next == nil {
+		doublyLinkedList.tail = newDoubleNode
+	}
 
 	doublyLinkedList.size++
 }
@@ -94,6 +101,7 @@ func (doublyLinkedList *DoublyLinkedList) RemoveFromIndex(index int) {
 		current.next.prev = current
 	} else {
 		current.next = nil
+		doublyLinkedList.tail = current
 	}
 
 	doublyLinkedList.size--
