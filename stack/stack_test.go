@@ -107,21 +107,23 @@ func testPop(t *testing.T) {
 			
 			value := stack.Pop()
 
-			if tt.stackSize == 0 {
+			if tt.stackSize == 0 && value != 0{
 				if value != 0 {
 					t.Errorf("Pop returned %d, expected %d", value, 0)
 				}
-				if stack.Length() != 0 {
-					t.Errorf("Failed to pop element. Length of instance is %d, expected %d", stack.Length(), 0)
-				}
-				return
 			} else {
 				if value != tt.topElement {
 					t.Errorf("Pop returned %d, expected %d", value, tt.topElement)
 				}
 			}
-			if stack.Length() != tt.stackSize - 1 {
-				t.Errorf("Failed to pop element. Length of instance is %d, expected %d", stack.Length(), tt.stackSize - 1)
+
+			sizeAfterPop := tt.stackSize - 1
+			if sizeAfterPop < 0 {
+				sizeAfterPop = 0
+			}
+
+			if stack.Length() != sizeAfterPop{
+				t.Errorf("Failed to pop element. Length of instance is %d, expected %d", stack.Length(), sizeAfterPop)
 			}
 		})
 	}
