@@ -12,7 +12,7 @@ type LinkedList struct {
 
 // Initialize the LinkedList.
 func (linkedList *LinkedList) Init() {
-	linkedList.head = &Node{value: 0, next: nil}
+	linkedList.head = nil
 	linkedList.size = 0
 }
 
@@ -23,21 +23,27 @@ func (linkedList *LinkedList) Length() int {
 
 // Add an element to the end of the LinkedList
 func (linkedList *LinkedList) AddToBack(value int) {
-	var tail *Node = linkedList.head
-
-	for i := 0; i < linkedList.size-1; i++ {
-		tail = tail.next
+	if linkedList.size == 0 {
+		linkedList.head = &Node{value: value, next: nil}
+	} else {
+		var tail *Node = linkedList.head
+		for i := 0; i < linkedList.size-1; i++ {
+			tail = tail.next
+		}
+		tail.next = &Node{value: value, next: nil}
 	}
-
-	tail.next = &Node{value: value, next: nil}
-
 	linkedList.size++
 }
 
 // Remove the last element of the LinkedList
 func (linkedList *LinkedList) RemoveFromBack() {
-	var tail *Node = linkedList.head
+	if linkedList.size == 1 {
+		linkedList.head = nil
+		linkedList.size--
+		return
+	}
 
+	var tail *Node = linkedList.head
 	for i := 0; i < linkedList.size-1; i++ {
 		tail = tail.next
 	}
