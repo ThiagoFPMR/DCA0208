@@ -6,7 +6,11 @@ import (
 
 // Useful when you only want to run a subset of tests.
 var tests = map[string]func(t *testing.T){
-	"Length": testLength,
+	"Length":  testLength,
+	"Peek":    testPeek,
+	"Enqueue": testEnqueue,
+	"Dequeue": testDequeue,
+	"IsEmpty": testIsEmpty,
 }
 
 // Runs all tests of the Stack interface.
@@ -22,7 +26,7 @@ func TestQueue(t *testing.T) {
 
 // Tests the Length method.
 func testLength(t *testing.T) {
-	queue := *new(Queue)
+	queue := new(Queue)
 	queue.Init()
 
 	limit := 15
@@ -35,9 +39,55 @@ func testLength(t *testing.T) {
 	}
 }
 
+var peekTests = map[string]struct {
+	frontValue, queueSize int
+}{
+	"NonEmpty": {15, 15},
+	"Empty":    {15, 0},
+}
+
 // Tests the Enqueue method.
 func testPeek(t *testing.T) {
-	queue := *new(Queue)
+	for name, tt := range peekTests {
+		tt := tt
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			queue := new(Queue)
+			queue.Init()
+
+			for i := 0; i < tt.queueSize; i++ {
+				queue.Enqueue(tt.frontValue)
+			}
+
+			value, error := queue.Peek()
+
+			// Tests relating to the value returned by Pop
+			if value != tt.frontValue && tt.queueSize > 0 {
+				t.Errorf("Peek returned %d, expected %d", value, tt.frontValue)
+			}
+			if tt.queueSize == 0 && value != 0 {
+				t.Errorf("Peek returned %d, expected %d", value, 0)
+			}
+
+			// Tests relating to the size after Peek
+			if tt.queueSize != queue.Length() {
+				t.Errorf("Peek altered the queue's size. It should not have. Size is %d, expected %d", queue.Length(), tt.queueSize)
+			}
+
+			// Tests relating to the error returned by Peek
+			if error != nil && tt.queueSize > 0 {
+				t.Errorf("Peek returned error, expected no error")
+			}
+			if error == nil && tt.queueSize == 0 {
+				t.Errorf("Peek returned no error, expected error")
+			}
+		})
+	}
+}
+
+// Tests the Enqueue method.
+func testEnqueue(t *testing.T) {
+	queue := new(Queue)
 	queue.Init()
 
 	limit := 15
@@ -45,15 +95,24 @@ func testPeek(t *testing.T) {
 		queue.Enqueue(i)
 	}
 
-	if queue.Peek() != 0 {
-		t.Errorf("Peek of instance is %d, expected %d", queue.Peek(), 0)
+	if queue.Length() != limit {
+		t.Errorf("Length of instance is %d, expected %d", queue.Length(), limit)
+	}
+
+	for i := 0; i < limit-1; i++ {
+		queue.Dequeue()
+	}
+
+	value, _ := queue.Peek()
+	if value != limit-1 {
+		t.Errorf("Value at the front of the queue does not match the inserted value. The value is %d, expected %d", value, limit-1)
 	}
 }
 
 var dequeueTests = map[string]struct {
 	frontValue, queueSize int
 }{
-	"Empty": {3, 0},
+	"Empty":    {3, 0},
 	"NonEmpty": {27, 15},
 }
 
@@ -63,14 +122,14 @@ func testDequeue(t *testing.T) {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			queue := *new(Queue)
+			queue := new(Queue)
 			queue.Init()
 
 			for i := 0; i < tt.queueSize; i++ {
-				queue.Enqueue(i)
+				queue.Enqueue(tt.frontValue)
 			}
 
-			value, error:= queue.Dequeue()
+			value, error := queue.Dequeue()
 
 			// Tests relating to the value returned by Dequeue
 			if value != tt.frontValue && tt.queueSize > 0 {
@@ -80,19 +139,19 @@ func testDequeue(t *testing.T) {
 				t.Errorf("Dequeue of instance is %d, expected %d", value, 0)
 			}
 
-			// Tests relating too the size after Dequeue
-			if tt.queueSize != 0 && queue.Length() != tt.queueSize - 1 {
-				t.Errorf("Failed to dequeue element properly. Length of instance is %d, expected %d", queue.Length(), tt.queueSize - 1)
+			// Tests relating to the size after Dequeue
+			if tt.queueSize > 0 && queue.Length() != tt.queueSize-1 {
+				t.Errorf("Failed to dequeue element properly. Length of instance is %d, expected %d", queue.Length(), tt.queueSize-1)
 			}
-			if tt.queueSize != 0 && queue.Length() != tt.queueSize {
+			if tt.queueSize == 0 && queue.Length() != tt.queueSize {
 				t.Errorf("Attempted to dequeue an empty queue.")
 			}
 
 			// Tests relating to the error returned by Dequeue
-			if error == nil && tt.queueSize > 0 {
+			if error != nil && tt.queueSize > 0 {
 				t.Errorf("Dequeue returned error, expected no error")
 			}
-			if error != nil && tt.queueSize == 0 {
+			if error == nil && tt.queueSize == 0 {
 				t.Errorf("Dequeue didn't return error, expected error")
 			}
 		})
@@ -102,10 +161,9 @@ func testDequeue(t *testing.T) {
 var isEmptyTests = map[string]struct {
 	queueSize int
 }{
-	"Empty": {0},
+	"Empty":    {0},
 	"NonEmpty": {15},
 }
-
 
 // Tests the IsEmpty method.
 func testIsEmpty(t *testing.T) {
@@ -126,5 +184,3 @@ func testIsEmpty(t *testing.T) {
 		})
 	}
 }
-
-

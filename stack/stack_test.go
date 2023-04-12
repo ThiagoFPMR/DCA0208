@@ -6,11 +6,11 @@ import (
 
 // Useful when you only want to run a subset of tests.
 var tests = map[string]func(t *testing.T){
-	"Length": testLength,
+	"Length":  testLength,
 	"IsEmpty": testIsEmpty,
-	"Push": testPush,
-	//"Peek": testPeek,
-	//"Pop": testPop,
+	"Push":    testPush,
+	"Peek":    testPeek,
+	"Pop":     testPop,
 }
 
 // Runs all tests of the Stack interface.
@@ -42,10 +42,9 @@ func testLength(t *testing.T) {
 var isEmptyTests = map[string]struct {
 	stackSize int
 }{
-	"Empty": {0},
+	"Empty":    {0},
 	"NonEmpty": {15},
 }
-
 
 // Tests the IsEmpty method.
 func testIsEmpty(t *testing.T) {
@@ -88,10 +87,10 @@ func testPush(t *testing.T) {
 }
 
 var popTests = map[string]struct {
-	topElement, stackSize int
+	topValue, stackSize int
 }{
 	"NonEmpty": {15, 15},
-	"Empty": {15, 0},
+	"Empty":    {15, 0},
 }
 
 // Tests the Pop method.
@@ -104,27 +103,25 @@ func testPop(t *testing.T) {
 			stack.Init()
 
 			for i := 0; i < tt.stackSize; i++ {
-				stack.Push(tt.topElement)
+				stack.Push(tt.topValue)
 			}
-			
+
 			value, error := stack.Pop()
 
-
 			// Tests relating to the value returned by Pop
-			if value != tt.topElement && tt.stackSize > 0 {
-				t.Errorf("Pop returned %d, expected %d", value, tt.topElement)
+			if value != tt.topValue && tt.stackSize > 0 {
+				t.Errorf("Pop returned %d, expected %d", value, tt.topValue)
 			}
 			if tt.stackSize == 0 && value != 0 {
 				t.Errorf("Pop returned %d, expected %d", value, 0)
 			}
 
 			// Tests relating to the size after Pop
-			sizeAfterPop := tt.stackSize - 1
-			if sizeAfterPop < 0 {
-				sizeAfterPop = 0
+			if tt.stackSize > 0 && stack.Length() != tt.stackSize-1 {
+				t.Errorf("Failed to pop element. Length of instance is %d, expected %d", stack.Length(), tt.stackSize-1)
 			}
-			if stack.Length() != sizeAfterPop{
-				t.Errorf("Failed to pop element. Length of instance is %d, expected %d", stack.Length(), sizeAfterPop)
+			if tt.stackSize == 0 && stack.Length() != tt.stackSize {
+				t.Errorf("Attempted to pop an empty stack.")
 			}
 
 			// Tests relating to the error returned by Pop
@@ -139,15 +136,15 @@ func testPop(t *testing.T) {
 }
 
 var peekTests = map[string]struct {
-	topElement, stackSize int
+	topValue, stackSize int
 }{
 	"NonEmpty": {15, 15},
-	"Empty": {15, 0},
+	"Empty":    {15, 0},
 }
 
 // Tests the Peek method.
 func testPeek(t *testing.T) {
-	for name, tt := range popTests {
+	for name, tt := range peekTests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
@@ -155,13 +152,25 @@ func testPeek(t *testing.T) {
 			stack.Init()
 
 			for i := 0; i < tt.stackSize; i++ {
-				stack.Push(tt.topElement)
+				stack.Push(tt.topValue)
 			}
 
 			value, error := stack.Peek()
-			if value != tt.topElement {
-				t.Errorf("Peek returned %d, expected %d", value, tt.topElement)
+
+			// Tests relating to the value returned by Pop
+			if value != tt.topValue && tt.stackSize > 0 {
+				t.Errorf("Peek returned %d, expected %d", value, tt.topValue)
 			}
+			if tt.stackSize == 0 && value != 0 {
+				t.Errorf("Peek returned %d, expected %d", value, 0)
+			}
+
+			// Tests relating to the size after Pop
+			if tt.stackSize != stack.Length() {
+				t.Errorf("Peek altered the stack's size. It should not have. Size is %d, expected %d", stack.Length(), tt.stackSize)
+			}
+
+			// Tests relating to the error returned by Peek
 			if error != nil && tt.stackSize > 0 {
 				t.Errorf("Peek returned error, expected no error")
 			}
@@ -171,6 +180,3 @@ func testPeek(t *testing.T) {
 		})
 	}
 }
-
-
-
