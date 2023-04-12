@@ -4,7 +4,7 @@
 ## DCA0208
 ### About this Repository
 
-This repository houses all of algorithm implementations for the **Algorithms and Data Structures II** course, also referred to as **DCA0208**. The choice of language was done by the professor. The github repository for the class can be found [here](https://github.com/eduardolfalcao/edi).
+This repository houses all of algorithm and data structure implementations for the **Algorithms and Data Structures II** course, also referred to as **DCA0208**. The choice of language was done by the professor. The github repository for the class can be found [here](https://github.com/eduardolfalcao/edi).
 
 #### References
 
