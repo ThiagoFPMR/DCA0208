@@ -13,7 +13,7 @@ func recursiveBinarySearch(arr list.List, target, leftLimit, rightLimit int) int
 		return mid
 	}
 
-	if leftLimit == rightLimit {
+	if leftLimit >= rightLimit {
 		return -1
 	}
 
