@@ -4,13 +4,13 @@ import (
 	"errors"
 )
 
-type StackNode struct {
+type node struct {
 	value int
-	prev  *StackNode
+	prev  *node
 }
 
 type Stack struct {
-	top  *StackNode
+	top  *node
 	size int
 }
 
@@ -32,7 +32,7 @@ func (stack *Stack) IsEmpty() bool {
 
 // Add an element to the top of the Stack
 func (stack *Stack) Push(value int) {
-	stack.top = &StackNode{value: value, prev: stack.top}
+	stack.top = &node{value: value, prev: stack.top}
 	stack.size++
 }
 

@@ -4,13 +4,13 @@ import (
 	"errors"
 )
 
-type QueueNode struct {
+type node struct {
 	value int
-	next  *QueueNode
+	next  *node
 }
 
 type Queue struct {
-	front *QueueNode
+	front *node
 	size  int
 }
 
@@ -33,13 +33,13 @@ func (queue *Queue) IsEmpty() bool {
 // Add an element to the back of the Queue
 func (queue *Queue) Enqueue(value int) {
 	if queue.IsEmpty() {
-		queue.front = &QueueNode{value: value, next: nil}
+		queue.front = &node{value: value, next: nil}
 	} else {
-		var tail *QueueNode = queue.front
+		var tail *node = queue.front
 		for i := 0; i < queue.size-1; i++ {
 			tail = tail.next
 		}
-		tail.next = &QueueNode{value: value, next: nil}
+		tail.next = &node{value: value, next: nil}
 	}
 	queue.size++
 }

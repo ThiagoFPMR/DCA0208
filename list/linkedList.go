@@ -1,12 +1,12 @@
 package list
 
-type Node struct {
+type node struct {
 	value int
-	next  *Node
+	next  *node
 }
 
 type LinkedList struct {
-	head *Node
+	head *node
 	size int
 }
 
@@ -24,13 +24,13 @@ func (linkedList *LinkedList) Length() int {
 // Add an element to the end of the LinkedList
 func (linkedList *LinkedList) AddToBack(value int) {
 	if linkedList.size == 0 {
-		linkedList.head = &Node{value: value, next: nil}
+		linkedList.head = &node{value: value, next: nil}
 	} else {
-		var tail *Node = linkedList.head
+		var tail *node = linkedList.head
 		for i := 0; i < linkedList.size-1; i++ {
 			tail = tail.next
 		}
-		tail.next = &Node{value: value, next: nil}
+		tail.next = &node{value: value, next: nil}
 	}
 	linkedList.size++
 }
@@ -43,7 +43,7 @@ func (linkedList *LinkedList) RemoveFromBack() {
 		return
 	}
 
-	var tail *Node = linkedList.head
+	var tail *node = linkedList.head
 	for i := 0; i < linkedList.size-1; i++ {
 		tail = tail.next
 	}
@@ -54,10 +54,10 @@ func (linkedList *LinkedList) RemoveFromBack() {
 
 // Add an element at the given index
 func (linkedList *LinkedList) AddOnIndex(index int, value int) {
-	var current *Node = linkedList.head
+	var current *node = linkedList.head
 
 	if index == 0 {
-		linkedList.head = &Node{value: value, next: current}
+		linkedList.head = &node{value: value, next: current}
 		linkedList.size++
 		return
 	}
@@ -66,14 +66,14 @@ func (linkedList *LinkedList) AddOnIndex(index int, value int) {
 		current = current.next
 	}
 
-	current.next = &Node{value: value, next: current.next}
+	current.next = &node{value: value, next: current.next}
 
 	linkedList.size++
 }
 
 // Remove the element at the given index
 func (linkedList *LinkedList) RemoveFromIndex(index int) {
-	var current *Node = linkedList.head
+	var current *node = linkedList.head
 
 	if index == 0 {
 		linkedList.head = current.next
@@ -96,7 +96,7 @@ func (linkedList *LinkedList) RemoveFromIndex(index int) {
 
 // Return the element at the given index
 func (linkedList *LinkedList) Get(index int) int {
-	var current *Node = linkedList.head
+	var current *node = linkedList.head
 
 	for i := 0; i < index; i++ {
 		current = current.next
@@ -107,7 +107,7 @@ func (linkedList *LinkedList) Get(index int) int {
 
 // Update the element at the given index
 func (linkedList *LinkedList) Update(index int, value int) {
-	var current *Node = linkedList.head
+	var current *node = linkedList.head
 
 	for i := 0; i < index; i++ {
 		current = current.next

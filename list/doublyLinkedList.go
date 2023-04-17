@@ -1,20 +1,20 @@
 package list
 
-type DoubleNode struct {
+type doubleNode struct {
 	value int
-	next  *DoubleNode
-	prev  *DoubleNode
+	next  *doubleNode
+	prev  *doubleNode
 }
 
 type DoublyLinkedList struct {
-	head *DoubleNode
-	tail *DoubleNode
+	head *doubleNode
+	tail *doubleNode
 	size int
 }
 
 // Initialize the DoublyLinkedList.
 func (doublyLinkedList *DoublyLinkedList) Init() {
-	doublyLinkedList.head = &DoubleNode{value: 0, next: nil, prev: nil}
+	doublyLinkedList.head = &doubleNode{value: 0, next: nil, prev: nil}
 	doublyLinkedList.tail = doublyLinkedList.head
 	doublyLinkedList.size = 0
 }
@@ -28,10 +28,10 @@ func (doublyLinkedList *DoublyLinkedList) Length() int {
 func (doublyLinkedList *DoublyLinkedList) AddToBack(value int) {
 
 	if doublyLinkedList.size == 0 {
-		doublyLinkedList.head = &DoubleNode{value: value, next: nil, prev: nil}
+		doublyLinkedList.head = &doubleNode{value: value, next: nil, prev: nil}
 		doublyLinkedList.tail = doublyLinkedList.head
 	} else {
-		doublyLinkedList.tail.next = &DoubleNode{value: value, next: nil, prev: doublyLinkedList.tail}
+		doublyLinkedList.tail.next = &doubleNode{value: value, next: nil, prev: doublyLinkedList.tail}
 		doublyLinkedList.tail = doublyLinkedList.tail.next
 	}
 
@@ -41,7 +41,7 @@ func (doublyLinkedList *DoublyLinkedList) AddToBack(value int) {
 // Remove the last element of the DoublyLinkedList
 func (doublyLinkedList *DoublyLinkedList) RemoveFromBack() {
 	if doublyLinkedList.size == 1 {
-		doublyLinkedList.head = &DoubleNode{value: 0, next: nil, prev: nil}
+		doublyLinkedList.head = &doubleNode{value: 0, next: nil, prev: nil}
 		doublyLinkedList.tail = doublyLinkedList.head
 	} else {
 		doublyLinkedList.tail.prev.next = nil
@@ -53,10 +53,10 @@ func (doublyLinkedList *DoublyLinkedList) RemoveFromBack() {
 
 // Add an element at the given index
 func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
-	var current *DoubleNode = doublyLinkedList.head
+	var current *doubleNode = doublyLinkedList.head
 
 	if index == 0 {
-		doublyLinkedList.head = &DoubleNode{value: value, next: current, prev: nil}
+		doublyLinkedList.head = &doubleNode{value: value, next: current, prev: nil}
 		current.prev = doublyLinkedList.head
 		doublyLinkedList.size++
 		return
@@ -68,14 +68,14 @@ func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
 
 	next := current.next
 
-	newDoubleNode := &DoubleNode{value: value, next: current.next, prev: current}
-	current.next = newDoubleNode
+	newdoubleNode := &doubleNode{value: value, next: current.next, prev: current}
+	current.next = newdoubleNode
 
 	if next != nil {
-		next.prev = newDoubleNode
+		next.prev = newdoubleNode
 	}
 	if next == nil {
-		doublyLinkedList.tail = newDoubleNode
+		doublyLinkedList.tail = newdoubleNode
 	}
 
 	doublyLinkedList.size++
@@ -83,7 +83,7 @@ func (doublyLinkedList *DoublyLinkedList) AddOnIndex(index int, value int) {
 
 // Remove an element at the given index
 func (doublyLinkedList *DoublyLinkedList) RemoveFromIndex(index int) {
-	var current *DoubleNode = doublyLinkedList.head
+	var current *doubleNode = doublyLinkedList.head
 
 	if index == 0 {
 		doublyLinkedList.head = current.next
@@ -109,7 +109,7 @@ func (doublyLinkedList *DoublyLinkedList) RemoveFromIndex(index int) {
 
 // Get the value of the element at the given index
 func (doublyLinkedList *DoublyLinkedList) Get(index int) int {
-	var current *DoubleNode = doublyLinkedList.head
+	var current *doubleNode = doublyLinkedList.head
 
 	for i := 0; i < index; i++ {
 		current = current.next
@@ -120,7 +120,7 @@ func (doublyLinkedList *DoublyLinkedList) Get(index int) int {
 
 // Update the element at the given index
 func (doublyLinkedList *DoublyLinkedList) Update(index int, value int) {
-	var current *DoubleNode = doublyLinkedList.head
+	var current *doubleNode = doublyLinkedList.head
 
 	for i := 0; i < index; i++ {
 		current = current.next
