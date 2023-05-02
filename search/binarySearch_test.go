@@ -30,7 +30,6 @@ func TestBinarySearch(t *testing.T) {
 			}
 
 			for impName, implementation := range implementations {
-				impName := impName
 				implementation := implementation
 				t.Run(impName, func(t *testing.T) {
 					t.Parallel()
