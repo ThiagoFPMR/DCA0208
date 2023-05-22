@@ -7,6 +7,7 @@ import (
 
 var implementations = map[string]func(arr list.List){
 	"BubbleSort": BubbleSort,
+	"SelectionSort": SelectionSort,
 }
 
 var TestCases = map[string]struct {
