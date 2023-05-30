@@ -5,10 +5,11 @@ import "dca0208/list"
 // Sorts the given list through the insertionSort implementation
 func InsertionSort(arr list.List) {
 	for i := 1; i < arr.Length(); i++ {
-		for j := i; j > 0 && arr.Get(j) < arr.Get(j-1); j-- {
-			tmp := arr.Get(j)
+		value := arr.Get(i)
+		var j int
+		for j = i; j > 0 && value < arr.Get(j-1); j-- {
 			arr.Update(j, arr.Get(j-1))
-			arr.Update(j-1, tmp)
 		}
+		arr.Update(j, value)
 	}
 }
