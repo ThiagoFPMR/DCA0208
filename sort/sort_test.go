@@ -8,6 +8,8 @@ import (
 var implementations = map[string]func(arr list.List){
 	"BubbleSort": BubbleSort,
 	"SelectionSort": SelectionSort,
+	"InsertionSort": InsertionSort,
+	"CountingSort": CountingSort,
 }
 
 var TestCases = map[string]struct {
@@ -18,6 +20,7 @@ var TestCases = map[string]struct {
 	"Single": {1, []int{1}},
 	"TwoOrdered": {2, []int{1, 2}},
 	"TwoReversed": {2, []int{2, 1}},
+	"SevenRepeated": {7, []int{1, 1, 5, 5, 7, 3, 3}},
 	"SevenRandom": {7, []int{8, 4, 5, 3, 2, 9, 10}},
 }
 
